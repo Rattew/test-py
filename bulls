@@ -1,0 +1,273 @@
+print("Input number (0-9) without repeat")
+repeat = "true"
+while repeat != "false":
+  my_number = []
+  m_index = 0
+  while m_index < 5:
+    m_index += 1
+    print("Input ", m_index, "number:")
+    a = str(input())
+    if a.isdigit(): 
+      a = int(a)
+      if a >= 0 and a <= 9:
+        my_number.append(a)
+        print(my_number)
+      else:
+        print("Incorrect symbol, try again")
+        m_index -= 1
+    else:
+      print("Incorrect symbol, try again")
+      m_index -= 1
+  uniq = "true" 
+  print("Checking unique...")
+  for i in range(m_index - 1):
+    for j in range(i+1, m_index):
+      if my_number[i] == my_number[j]:
+        print("There is some equal numbers, try again")
+        uniq = "false"
+        break  
+  if uniq == "true":        
+    print("Looks good, lets start? (yes or no?)")  
+    answer = 0 
+    while answer != 1: 
+      answer += 1
+      response = str(input())
+      if response == "yes":
+        print("Game started!")
+        repeat = "false"
+      elif response == "no":
+        print("Lets try again")
+      else:
+        print("Incorrect symbol, try again")
+        answer -= 1       
+import random  
+c_repeat = "true"
+while c_repeat != "false":
+  c_number = []
+  c_index = 0
+  while c_index < 5:
+    c_index += 1
+    c_rnd = random.randint(0, 9)
+    c_number.append(c_rnd)
+  c_uniq = "true" 
+  for i in range(c_index):
+    for j in range(i+1, c_index):
+      if c_number[i] == c_number[j]:
+        c_uniq = "false"
+        break
+  if c_uniq == "true":
+    c_repeat = "false"
+d0 = [i for i in range(10)]
+d1 = [i for i in range(10)]
+d2 = [i for i in range(10)]
+d3 = [i for i in range(10)]
+d4 = [i for i in range(10)]
+d5 = [i for i in range(10)]
+d6 = [i for i in range(10)]
+d7 = [i for i in range(10)]
+from prettytable import PrettyTable
+tbl = [my_number, "Bulls", "Cows", "Comp_number", "Bulls_c", "cows_c"]
+columns = len(tbl)
+table = PrettyTable(tbl)
+print(table)
+import random 
+g_repeat = "true"
+first_try = "true"
+while g_repeat != "false" and first_try != "false":
+  g_number = []
+  g_index = 0
+  while g_index < 5:
+    g_index += 1
+    g_rnd = random.randint(0, 9)
+    g_number.append(g_rnd)
+  g_uniq = "true" 
+  for i in range(g_index):
+    for j in range(i+1, g_index):
+      if g_number[i] == g_number[j]:
+        g_uniq = "false"
+        break
+  if g_uniq == "true":
+    g_repeat = "false"
+    first_try = "false"
+turn = 1
+count = 0
+bulls = 0
+cows = 0
+bulls_c = 0
+cows_c = 0
+f_repeat = "true"
+while f_repeat != "false":
+  if turn % 2 == 0: 
+    print("Your turn!(Input number (0-9) without repeat)")
+    t_repeat = "true"
+    while t_repeat != "false":
+      a_number = []
+      a_index = 0
+      while a_index < 5:
+        a_index += 1
+        print("Input", a_index, "number")
+        b = str(input())
+        if b.isdigit():
+          b = int(b)
+          if b >= 0 and b <= 9:
+            a_number.append(b)
+            print(a_number)
+          else:
+            print("Incorrect symbol, try again")
+            a_index -= 1
+        else:
+          print("Incorrect symbol, try again")
+          a_index -= 1
+      t_repeat = "false"
+    for i in range(a_index):
+      if c_number[i] == a_number[i]:
+        bulls_c += 1
+        continue
+    for i in range(a_index):
+      for j in range(a_index):
+        if i != j and c_number[i] == a_number[j]:
+          cows_c += 1
+          continue
+    table.add_row(["yours ->", "x", "x", a_number, bulls_c, cows_c])
+    print(table)
+    turn += 1
+    if bulls_c == 5:
+      print("Victory!")
+      print("Turn Count:", count)
+      f_repeat = "false"  
+    bulls_c = 0
+    cows_c = 0
+  else:
+    while bulls != 5 and turn % 2 !=0 :
+      count += 1
+      for i in range(g_index):
+        if my_number[i] == g_number[i]:
+          bulls += 1
+          continue
+      for i in range(g_index):
+        for j in range(g_index):
+          if i != j and my_number[i] == g_number[j]:
+            cows += 1
+            continue
+      table.add_row([g_number, bulls, cows, "<-comp", "x", "x"])
+      print(table)
+      turn += 1
+      if bulls == 5 and cows == 0:
+        print("Wasted!", g_number)
+        print("Turn count:", count)
+        f_repeat = "false"
+      elif bulls == 0 and cows == 5:
+        d5 = g_number[:]
+        g_repeat = "true"
+        bulls = 0
+        cows = 0        
+        while g_repeat != "false":
+          g_number = []
+          g_number.append(random.choice(d5))
+          g_number.append(random.choice(d5))
+          g_number.append(random.choice(d5))
+          g_number.append(random.choice(d5))
+          g_number.append(random.choice(d5))
+          g_uniq = "true" 
+          for i in range(5):
+            for j in range(i+1, 5):
+              if g_number[i] == g_number[j]:
+                g_uniq = "false"
+                break
+          if g_uniq == "true":
+            g_repeat = "false"
+      elif bulls == 0 and cows == 0:
+        d6 = g_number[:]
+        for i in range(5):
+          d0.remove(d6[i])
+        for i in range(5):
+          d1.remove(d6[i])
+        for i in range(5):
+          d2.remove(d6[i])
+        for i in range(5):
+          d3.remove(d6[i])
+        for i in range(5):
+          d4.remove(d6[i])        
+        g_repeat = "true"
+        bulls = 0
+        cows = 0 
+        while g_repeat != "false":
+          g_number = []
+          g_number.append(random.choice(d0))
+          g_number.append(random.choice(d1))
+          g_number.append(random.choice(d2))
+          g_number.append(random.choice(d3))
+          g_number.append(random.choice(d4))
+          g_uniq = "true" 
+          for i in range(5):
+            for j in range(i+1, 5):
+              if g_number[i] == g_number[j]:
+                g_uniq = "false"
+                break
+          if g_uniq == "true":
+            g_repeat = "false"
+      elif bulls + cows == 5 and bulls in range(1, 5) and cows in range(1, 5):
+        d7 = g_number[:]
+        g_repeat = "true"
+        bulls = 0
+        cows = 0        
+        while g_repeat != "false":
+          g_number = []
+          g_number.append(random.choice(d7))
+          g_number.append(random.choice(d7))
+          g_number.append(random.choice(d7))
+          g_number.append(random.choice(d7))
+          g_number.append(random.choice(d7))
+          g_uniq = "true" 
+          for i in range(5):
+            for j in range(i+1, 5):
+              if g_number[i] == g_number[j]:
+                g_uniq = "false"
+                break
+          if g_uniq == "true":
+            g_repeat = "false"
+      elif bulls in range(1, 5) and bulls + cows < 5:
+        g_repeat = "true"
+        bulls = 0
+        cows = 0
+        while g_repeat != "false":
+          g_number = []
+          g_number.append(random.choice(d0))
+          g_number.append(random.choice(d1))
+          g_number.append(random.choice(d2))
+          g_number.append(random.choice(d3))
+          g_number.append(random.choice(d4))
+          g_uniq = "true" 
+          for i in range(5):
+            for j in range(i+1, 5):
+              if g_number[i] == g_number[j]:
+                g_uniq = "false"
+                break
+          if g_uniq == "true":
+            g_repeat = "false"
+      elif bulls == 0 and cows in range(1, 5):
+        d0.remove(g_number[0])
+        d1.remove(g_number[1])
+        d2.remove(g_number[2])
+        d3.remove(g_number[3])
+        d4.remove(g_number[4])
+        g_repeat = "true"
+        bulls = 0
+        cows = 0
+        while g_repeat != "false":
+          g_number = []
+          g_number.append(random.choice(d0))
+          g_number.append(random.choice(d1))
+          g_number.append(random.choice(d2))
+          g_number.append(random.choice(d3))
+          g_number.append(random.choice(d4))
+          g_uniq = "true" 
+          for i in range(5):
+            for j in range(i+1, 5):
+              if g_number[i] == g_number[j]:
+                g_uniq = "false"
+                break
+          if g_uniq == "true":
+            g_repeat = "false"
+      else:
+        bulls = 5
