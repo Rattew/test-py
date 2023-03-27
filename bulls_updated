@@ -1,0 +1,97 @@
+import sys
+import random
+from prettytable import PrettyTable
+
+print('''Добро пожаловать в игру "Быки и коровы"! Правила простые: необходимо
+придумать 5-значное число без повторяющихся цифр и угадать число соперника
+первым. При каждой попытке игра будет вам сообщать, насколько вы близки
+к успеху. "Бык" - цифра присутствует в числе и стоит на своем месте, "корова" -
+цифра есть, но она не на своем месте. Удачи!''')
+
+#функция проверяет ввод(пока не получит 5-значное число без повторов)
+def user_data():    
+    check = 'False'
+    while check != 'True':
+        print('Введите число:')
+        user_number = input()
+        if user_number.isdigit() and len(user_number) == 5:
+            user_number = list(map(int, user_number))
+            if len(set(user_number)) == 5:
+                check = 'True'
+                return user_number
+            else:
+                print('Ошибка ввода, введите 5-значное число без повторов:')
+        else:
+            print('Ошибка ввода, введите 5-значное число без повторов:')
+
+#функция генерирует случайное 5-значное число
+def comp_data():
+    #global turn_count
+    #if turn_count <= 1:
+        default_array = [i for i in range(10)]
+        random.shuffle(default_array)
+        del default_array[0:5]
+        return default_array
+    #else:
+        #print('qq')
+
+#функция рисует таблицу
+def draw_table(player_number, comp_guess, comp_att, guess_number, user_att):    
+    global turn_count    
+    if turn_count == 1:
+        tbl = ["Ход", player_number, "Быки", "Коровы", "Число компьютера", "Быки ", "Коровы "]
+        columns = len(tbl)
+        table = PrettyTable(tbl)
+        table.add_row([">", "Ход компьютера", "<<<", "<<<", "Ход Игрока", "<<<", "<<<" ])
+        print(table)
+        return table
+    else:
+        global header
+        y = int(turn_count / 2)
+        header.add_row([y, comp_guess, comp_att[0], comp_att[1], guess_number, user_att[0], user_att[1]])
+        print(header)    
+
+#функция ведет подсчет быков и коров
+def score_counter(guess_number):
+    bulls, cows = 0, 0
+    global turn_count    
+    if turn_count % 2 != 0:
+        x = player_number
+    else:
+        x = comp_number    
+    for i in range(5):
+        for j in range(5):
+            if i == j and x[i] == guess_number[j]:
+                bulls += 1                
+            elif i != j and x[i] == guess_number[j]:
+                cows += 1                
+            else:
+                continue
+    return bulls, cows
+
+#основной цикл программы    
+turn_count = 1
+player_number = user_data()
+comp_number = comp_data()
+header = draw_table(player_number, 0, 0, 0, 0)
+#print('ключ', comp_number)
+while True:
+    if turn_count % 2 != 0:
+        comp_guess = comp_data()
+        comp_att = score_counter(comp_guess)
+        if comp_att[0] == 5:
+            print('Победил компьютер!')
+            break
+        else:
+            turn_count += 1
+    else:
+        print('Ход игрока')
+        guess_number = user_data()
+        user_att = score_counter(guess_number)
+        if user_att[0] == 5:
+            print('Победил игрок!')
+            break
+        else:
+            draw_table(player_number, comp_guess, comp_att, guess_number, user_att)
+            turn_count += 1
+print('Игра окончена.')
